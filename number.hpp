@@ -1,0 +1,14 @@
+#define STOP 0
+#define rGO 1
+#define lGO 2
+#define rBACK 3
+#define lBACK 4
+#define LEFT45 5
+#define LEFT90 6
+#define RIGHT45 7 
+#define RIGHT90 8 
+#define rHAND 9
+#define lHAND 10
+#define bHAND 11
+#define rFACE 12
+#define lFACE 13
