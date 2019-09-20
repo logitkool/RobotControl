@@ -1,4 +1,4 @@
-#include <vs-rc202.h>
+ #include <vs-rc202.h>
 #include "motion.hpp"
 #include "number.hpp"
 
@@ -45,10 +45,10 @@ void selectMotion()
       playMotionOnce(waveBothHand, 3);
       break;
     case rFACE:
-      playMotionOnce(turnRight, 1);
+      playMotionOnce(turnRight, 2);
       break;
     case lFACE:
-      playMotionOnce(turnLeft, 1);
+      playMotionOnce(turnLeft, 2);
       break;
   }
 }
