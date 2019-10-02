@@ -4,6 +4,7 @@
 #include <FS.h>
 #include <WiFiClient.h>
 #include <vs-rc202.h>
+#include "wifi-config.h"
 
 #define GO 0
 #define LEFT 1
@@ -23,7 +24,7 @@
 #define POWEROFF 11
 
 #define go_set go, 8
-#define back_set back, 9
+#define back_set back, 8
 #define left_set left, 5
 #define right_set right, 5
 #define super_left_set super_left, 5
@@ -34,8 +35,6 @@
 #define left_shak_set left_shake, 2
 #define right_shake_set right_shake, 2
 
-const char *ssid = "NatoriSana-love-24GHz";
-const char *password = "*******";
 
 ESP8266WebServer server(80);
 
@@ -43,21 +42,19 @@ int home_position[1][11] = {
   {800, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 };
 
-int go[][11] = {
-  {500, 0, 0, 800, 0, 0, 0, 0, 0, 0, 0},
+int go[][11] = {{500, 0, 0, 800, 0, 0, 0, 0, 0, 0, 0},
   {300, -500, -500, 800, 0, 0, 0, 0, 0, 0, 0},
   {300, -500, -500, 0, 0, 0, 0, 0, 0, 0, 0},
   {300, -500, -500, -800, 0, 0, 0, 0, 0, 0, 0},
   {400, 500, 500, -800, 0, 0, 0, 0, 0, 0, 0},
   {300, 500, 500, 0, 0, 0, 0, 0, 0, 0, 0},
   {300, 0, 0, 800, 0, 0, 0, 0, 0, 0, 0},
-  {800, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
-};
+  {800, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}};
 
 int left[5][11] = {
   {300, 0, 0, -600, 0, 0, 0, 0, 0, 0, 0},
-  {300, 300,0, -600, 0, 0, 0, 0, 0, 0, 0},
-  {500, 300,0, 600, 0, 0, 0, 0, 0, 0, 0},
+  {300, 300, 0, -600, 0, 0, 0, 0, 0, 0, 0},
+  {500, 300, 0, 600, 0, 0, 0, 0, 0, 0, 0},
   {300, 0, 0, 600, 0, 0, 0, 0, 0, 0, 0},
   {300, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 };
@@ -69,8 +66,7 @@ int right[5][11] = {
   {300, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 };
 
-int back[9][11] = {
-  {500, 0, 0, -800, 0, 0, 0, 0, 0, 0, 0},
+int back[9][11] = {{500, 0, 0, -800, 0, 0, 0, 0, 0, 0, 0},
   {300, -600, -600, -800, 0, 0, 0, 0, 0, 0, 0},
   {300, -600, -600, 0, 0, 0, 0, 0, 0, 0, 0},
   {300, -600, -600, 800, 0, 0, 0, 0, 0, 0, 0},
@@ -79,29 +75,27 @@ int back[9][11] = {
 
   {300, 600, 600, 0, 0, 0, 0, 0, 0, 0, 0},
   {300, 0, 0, -800, 0, 0, 0, 0, 0, 0, 0},
-  {800, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
-};
+  {800, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}};
 int left_shake[2][11] = {
   {800, 0, 0, 0, -1500, 0, 0, 0, 0, 0, 0},
   {800, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 };
-//--------TODO-------------
 int right_shake[2][11] = {
   {800, 0, 0, 0, 1500, 0, 0, 0, 0, 0, 0},
   {800, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 };
+//--------TODO-------------
 int left_hand[2][11] = {
-  {800, 0, 0, 0, 1500, 0, 0, 0, 0, 0, 0},
-  {800, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+  {800, 0, 0, 0, 0, 1300, 0, 0, 0, 0, 0},
+  {800, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
 };
 int right_hand[2][11] = {
-  {800, 0, 0, 0, 1500, 0, 0, 0, 0, 0, 0},
-  {800, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+  {800, 0, 0, 0, 0, 0, -1300, 0, 0, 0, 0},
+  {800, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
 };
-int hand[2][11] = {
-  {800, 0, 0, 0, 1500, 0, 0, 0, 0, 0, 0},
-  {800, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-};
+
+int hand[2][11] = {{800, 0, 0, 0, 0, 1300, -1300, 0, 0, 0, 0},
+  {800, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}};
 //--------------------------
 
 int super_right[5][11] = {
@@ -163,7 +157,7 @@ void selectMotion() {
 }
 
 // Send UI page
-void handleRoot() { server.send(200, "text/html","Stand_by"); }
+void handleRoot() { server.send(200, "text/html", "Stand_by"); }
 
 void Go() {
   setMotionNumber(GO);
@@ -201,31 +195,31 @@ void PowerOff() {
   powerOff();
 }
 
-void Super_left(){
+void Super_left() {
   setMotionNumber(SUPER_LEFT);
   server.send(200, "text/html", "super_left");
 }
-void Super_right(){
+void Super_right() {
   setMotionNumber(SUPER_RIGHT);
   server.send(200, "text/html", "super_right");
 }
-void Left_hand(){
+void Left_hand() {
   setMotionNumber(LEFT_HAND);
   server.send(200, "text/html", "left_hand");
 }
-void Right_hand(){
+void Right_hand() {
   setMotionNumber(RIGHT_HAND);
   server.send(200, "text/html", "right_hand");
 }
-void Hand(){
+void Hand() {
   setMotionNumber(HAND);
   server.send(200, "text/html", "hand");
 }
-void Left_shake(){
+void Left_shake() {
   setMotionNumber(LEFT_SHAKE_HEAD);
   server.send(200, "text/html", "left_shake");
 }
-void Right_shake(){
+void Right_shake() {
   setMotionNumber(RIGHT_SHAKE_HEAD);
   server.send(200, "text/html", "right_shake");
 }
@@ -272,6 +266,8 @@ void setup() {
   servoEnable(2, 1); // Enable SV2 PWM
   servoEnable(3, 1); // Enable SV3 PWM
   servoEnable(4, 1); // Enable SV4 PWM
+  servoEnable(5, 1); // Enable SV4 PWM
+  servoEnable(6, 1); // Enable SV4 PWM
 
   // SV9 and SV10 LED mode
   servoEnable(9, 1);  // Enable SV9 PWM
@@ -284,7 +280,8 @@ void setup() {
   setServoOffset(2, 0);
   setServoOffset(3, -200);
   setServoOffset(4, 0);
-  WiFi.config(IPAddress(192,168,1,250),IPAddress(192,168,1,1),IPAddress(255,255,255,0));
+  WiFi.config(IPAddress(192, 168, 11, 250), IPAddress(192, 168, 11, 1),
+      IPAddress(255, 255, 255, 0));
   // Connect to AP
   WiFi.begin(ssid, password);
   WiFi.mode(WIFI_STA);
@@ -306,14 +303,14 @@ void setup() {
   server.on("/right/", Right);
   server.on("/back/", Back);
   server.on("/stop/", Stop);
-  server.on("/super_left/",Super_left);
-  server.on("/super_right/",Super_right);
-  server.on("/left_hand/",Left_hand);
-  server.on("/right_hand/",Right_hand);
-  server.on("/hand/",Hand);
-  server.on("/left_shake/",Left_shake);
-  server.on("/right_shake/",Right_shake);
-  server.on("/poweroff/",PowerOff);
+  server.on("/super_left/", Super_left);
+  server.on("/super_right/", Super_right);
+  server.on("/left_hand/", Left_hand);
+  server.on("/right_hand/", Right_hand);
+  server.on("/hand/", Hand);
+  server.on("/left_shake/", Left_shake);
+  server.on("/right_shake/", Right_shake);
+  server.on("/poweroff/", PowerOff);
   server.on("/sens/", Sens);
 
   // Start server
