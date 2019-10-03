@@ -134,18 +134,25 @@ void setup()
 {
   initLib();                //Initilize vs-rc202 library
   
-  servoEnable(1, 1);        //Enable SV1 PWM
-  servoEnable(2, 1);        //Enable SV2 PWM
-  servoEnable(3, 1);        //Enable SV3 PWM
-  servoEnable(4, 1);        //Enable SV4 PWM
-  servoEnable(5, 1);        //Enable SV3 PWM
-  servoEnable(6, 1);        //Enable SV4 PWM
+  servoEnable(1, 1);        
+  servoEnable(2, 1);
+  servoEnable(3, 1);
+  servoEnable(4, 1);
+  servoEnable(5, 1);
+  servoEnable(6, 1);
+  servoEnable(9, 1);
+  servoEnable(10, 1);
+  setLedMode(9, 1);
+  setLedMode(10, 1);
 
   Serial.begin(115200);     //Initialize UART
 }
 
 void loop()
 {
+  setLedBrightnessDirect(9, 0);
+  setLedBrightnessDirect(10, 0);
+  
   getCommand(); //コマンドを受け取ってピッコロボの動きを決める
   selectMotion(); //ピッコロボを動かす
 }
