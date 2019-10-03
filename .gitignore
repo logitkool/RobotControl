@@ -32,3 +32,4 @@
 *.app
 
 /master/wifi-config.h
+/master.cpp
