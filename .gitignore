@@ -31,4 +31,4 @@
 *.out
 *.app
 
-./master/wifi-config.h
+/master/wifi-config.h
