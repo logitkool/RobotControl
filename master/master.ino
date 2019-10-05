@@ -223,6 +223,10 @@ void Right_shake() {
   setMotionNumber(RIGHT_SHAKE_HEAD);
   server.send(200, "text/html", "right_shake");
 }
+void Led_on(){
+  setLedBrightnessDirect(9,1000);   //Turn on LED
+  setLedBrightnessDirect(10,1000);
+}
 
 void Sens() {
 
@@ -311,6 +315,7 @@ void setup() {
   server.on("/left_shake/", Left_shake);
   server.on("/right_shake/", Right_shake);
   server.on("/poweroff/", PowerOff);
+  server.on("/led/", Led_on);
   server.on("/sens/", Sens);
 
   // Start server
