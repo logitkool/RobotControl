@@ -152,8 +152,18 @@ void Right_shake() {
   server.send(200, "text/html", "right_shake");
 }
 void Led_on(){
-  setLedBrightnessDirect(9,1000);   //Turn on LED
-  setLedBrightnessDirect(10,1000);
+  static bool led_onoff_flag = false;
+  if(led_onoff_flag == 0){
+    setLedBrightnessDirect(9,1000);   //Turn on LED
+    setLedBrightnessDirect(10,1000);
+    led_onoff_flag = 1;
+  }else{
+    setLedBrightnessDirect(9,0);   //Turn off LED
+    setLedBrightnessDirect(10,0);
+    led_onoff_flag = 0;
+  }
+  
+  server.send(200, "text/html","LED");
 }
 
 void Sens() {
